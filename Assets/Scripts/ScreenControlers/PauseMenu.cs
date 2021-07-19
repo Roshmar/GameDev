@@ -4,22 +4,17 @@ using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
-    private bool isGamePaused;
-    private void Start() {
-        isGamePaused = false;
-        gameObject.SetActive(false);
-    }
+    // private bool isGamePaused;
     public void Resume()
     {
-        isGamePaused = false;
-        gameObject.SetActive(false);
+        // isGamePaused = false;
+        MenuManager.Instance.ClosePauseMenu();
         Time.timeScale = 1f;
     }
-
     public void Pause()
     {
-        gameObject.SetActive(true);
-        isGamePaused = true;
+        MenuManager.Instance.OpenPauseMenu();
+        // isGamePaused = true;
         Time.timeScale = 0f;
     }
 }

@@ -8,6 +8,7 @@ public class PlayerController : Singleton<PlayerController>
     private Vector3 startGamePosition;
     private Quaternion startGameRotation;
 
+    private bool isGameEnd = false;
     private bool isSound = true;  // Sound
     private bool isDamage = false; // Is hero intersect with NotLose Tag prefab
 
@@ -33,16 +34,16 @@ public class PlayerController : Singleton<PlayerController>
     private float jumpGravity = -40;
     private float realGravity = -9.8f;
 
+
     private void Start()
     {
-
         laneOffset = MapGenerator.Instance._laneOffset;
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
         startGamePosition = transform.position;
         startGameRotation = transform.rotation;
         SwipeManager.Instance.MoveEvent += MovePlayer;
-        
+
     }
     // Update is called once per frame
     private void MovePlayer(bool[] swipes)
@@ -172,22 +173,30 @@ public class PlayerController : Singleton<PlayerController>
     }
     public void StartGame()
     {
+        isGameEnd = false;
+        animator.SetTrigger("turnAround");
+        // animator.SetTrigger("run");
+    }
+    public void StartLevel()
+    {
+        transform.RotateAround(transform.position, transform.up, 180f);
         RoadGenerator.Instance.StartLevel();
-        // animator.SetTrigger("running");
     }
 
     public void ResetGame()
     {
+        isGameEnd = true;
         isDamage = false;
         rb.velocity = Vector3.zero;
         pointStart = 0;
         pointFinish = 0;
-        Score.Instance.ResetScore();
+
         // animator.applyRootMotion = true;
         // animator.SetTrigger("standing");
         transform.position = startGamePosition;
         transform.rotation = startGameRotation;
         RoadGenerator.Instance.ResetLevel();
+        animator.SetTrigger("endGame");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -216,7 +225,7 @@ public class PlayerController : Singleton<PlayerController>
         {
             if (isDamage)
             {
-                MenuManager.instance.OpenDeathMenu();
+                MenuManager.Instance.OpenDeathMenu();
             }
             else
             {
@@ -228,9 +237,10 @@ public class PlayerController : Singleton<PlayerController>
         }
         if (collision.gameObject.tag == "Lose")
         {
-            MenuManager.instance.OpenDeathMenu();
+            MenuManager.Instance.OpenDeathMenu();
         }
     }
+
     IEnumerator StopGameCoroutine()
     {
         yield return new WaitForSeconds(5.0f);
@@ -289,5 +299,9 @@ public class PlayerController : Singleton<PlayerController>
     public bool GetSound()
     {
         return isSound;
+    }
+    public bool GetIsGameEnd()
+    {
+        return isGameEnd;
     }
 }

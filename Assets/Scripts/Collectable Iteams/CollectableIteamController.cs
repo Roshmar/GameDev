@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectableIteamController : MonoBehaviour
+public class CollectableIteamController : Score 
 {
     [SerializeField] private string iteamType;
     float maxDoubleScoreDuration = 10.0f;//Double score duration;
@@ -10,8 +10,7 @@ public class CollectableIteamController : MonoBehaviour
     float maxDoubleCoinDuration = 10.0f;
     float maxMagnetDuration = 10.0f;
     float rotationSpeed = 100;
-    public GameObject coinDetectorObj;
-  
+    // public GameObject coinDetectorObj;
 
     void Start()
     {
@@ -32,7 +31,7 @@ public class CollectableIteamController : MonoBehaviour
         {
             if (iteamType == "doubleScore")
             {
-                Score.Instance.ActivateDoubleScore(maxDoubleScoreDuration); //Double Score power up
+                ActivateDoubleScore(maxDoubleScoreDuration); //Double Score power up
             }
             else if (iteamType == "magnet") // if player pick up magnet
             {

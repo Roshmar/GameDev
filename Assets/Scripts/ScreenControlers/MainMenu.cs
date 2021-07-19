@@ -5,20 +5,12 @@ using UnityEngine.UI;
 
 
 public class MainMenu : MonoBehaviour
-{   
-    [SerializeField]private Sprite SoundsOn, SoundsOff;
-    [SerializeField]private Image SoundBtnImg;
+{
+    [SerializeField] private Sprite SoundsOn, SoundsOff;
+    [SerializeField] private Image SoundBtnImg;
     public void PlayBth()
     {
-        gameObject.SetActive(false);
-        PlayerController.Instance.StartGame();
-    }
-
-    public void OpenMenu()
-    {   
-        PlayerController.Instance.ResetGame();
-        
-        gameObject.SetActive(true);
+        MenuManager.Instance.PlayGame();
     }
 
     public void QuitBtn()

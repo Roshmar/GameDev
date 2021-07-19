@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Score : Singleton<Score>
+public class Score : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private Text scoreText; // output score text
@@ -23,8 +23,18 @@ public class Score : Singleton<Score>
         {
             StartCoroutine(StopScoreCoroutine(RoadGenerator.Instance.speed));
         }
-        scoreText.text = ((int)(score)).ToString(); // output text score 
-        coinText.text = (PlayerController.Instance.GetCoins()).ToString(); //coin count output
+        if(scoreText != null){
+            scoreText.text = ((int)(score)).ToString(); // output text score 
+        }
+        
+        if (coinText != null)
+        {
+            coinText.text = (PlayerController.Instance.GetCoins()).ToString(); //coin count output
+        }
+        if(PlayerController.Instance.GetIsGameEnd()){
+            ResetScore();
+        }
+
     }
     public void ActivateDoubleScore(float duration) //Function activate double score power up
     {
